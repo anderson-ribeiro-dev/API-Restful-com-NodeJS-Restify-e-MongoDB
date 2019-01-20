@@ -37,11 +37,21 @@ const userSchema = new mongoose.Schema({
             validator: validators_1.validateCPF,
             message: '{PATH}: Invalid CPF ({VALUE})',
         }
+    },
+    profiles: {
+        type: [String],
+        required: false
     }
 });
 // personalizar o model
-userSchema.statics.findByEmail = function (email) {
-    return this.findOne({ email }); //{email: email}
+userSchema.statics.findByEmail = function (email, projection) {
+    return this.findOne({ email, projection }); //{email: email}
+};
+userSchema.methods.matches = function (password) {
+    return bcrypt.compareSync(password, this.password);
+};
+userSchema.methods.hasAny = function (...profiles) {
+    return profiles.some(profile => this.profiles.indexOf(profile) !== -1);
 };
 //function has
 const hashPassword = (obj, next) => {

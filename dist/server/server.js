@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const environment_1 = require("../common/environment");
 const merge_patch_parser_1 = require("./merge-patch.parser");
 const error_handler_1 = require("./error.handler");
+const token_parser_1 = require("../security/token.parser");
 //servidor genérrico
 class Server {
     //método conexão bd
@@ -26,6 +27,7 @@ class Server {
                 this.application.use(restify.plugins.queryParser()); //parse de parâmetros na url
                 this.application.use(restify.plugins.bodyParser()); //parse body
                 this.application.use(merge_patch_parser_1.mergePatchBodyParser);
+                this.application.use(token_parser_1.tokenParser);
                 //routers application
                 for (let router of routers) {
                     router.applyRoutes(this.application);

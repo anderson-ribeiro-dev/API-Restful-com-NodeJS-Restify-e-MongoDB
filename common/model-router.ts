@@ -1,7 +1,6 @@
 import { Router } from './router'
 import * as mongoose from 'mongoose' 
 import { NotFoundError } from 'restify-errors'
-import { url } from 'inspector';
 
 export abstract class ModelRouter<D extends mongoose.Document> extends Router {
    //links rotas 
